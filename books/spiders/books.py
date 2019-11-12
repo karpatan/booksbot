@@ -6,11 +6,11 @@ class BooksSpider(scrapy.Spider):
     name = "books"
     allowed_domains = ["books.toscrape.com"]
     start_urls = [
-        'http://books.toscrape.com/',
+        'https://www.sreality.cz/hledani/prodej/pozemky/stavebni-parcely/plzen?strana=1',
     ]
 
     def parse(self, response):
-        for book_url in response.css("article.product_pod > h3 > a ::attr(href)").extract():
+        for book_url in response.css("text-wrap > h2 > a ::attr(href)").extract():
             yield scrapy.Request(response.urljoin(book_url), callback=self.parse_book_page)
         next_page = response.css("li.next > a ::attr(href)").extract_first()
         if next_page:
